@@ -1,5 +1,5 @@
 {% set name = "osx-sysroot" %}
-{% set version = "1" %}
+{% set version = "2" %}
 
 package:
   name: {{ name|lower }}
@@ -19,7 +19,9 @@ outputs:
       noarch: generic
       run_exports:
         strong:
+{% if cross_target_platform != "osx-arm64" or _MACOSX_DEPLOYMENT_TARGET_ != "11.0" %}
           - __osx >={{ _MACOSX_DEPLOYMENT_TARGET_ }}
+{% endif %}
     test:
       commands:
         - "[[ ${MACOSX_DEPLOYMENT_TARGET} == '{{ _MACOSX_DEPLOYMENT_TARGET_ }}' ]]"
